@@ -1,8 +1,13 @@
+import { useLanguage } from '../../context/LanguageContext'
+
 function AppFooter() {
+  const { t } = useLanguage()
+
   return (
-    <footer className="border-top border-secondary-subtle py-4 text-center text-secondary">
+    <footer className="app-footer border-top py-4 text-center">
       <div className="container">
-        2026 &copy; 
+        <span className="d-block fw-semibold text-white">{t('appName')}</span>
+        <span>{t('footerText')}</span>
       </div>
     </footer>
   )

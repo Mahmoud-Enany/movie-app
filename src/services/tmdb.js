@@ -8,7 +8,7 @@ export function getImageUrl(path) {
 
 export async function searchMovies(query) {
   if (!API_KEY) {
-    throw new Error('Missing TMDB API key. Add VITE_TMDB_API_KEY to your .env file.')
+    throw new Error('Movie search is not available right now.')
   }
 
   const params = new URLSearchParams({
@@ -22,7 +22,7 @@ export async function searchMovies(query) {
   const response = await fetch(`${BASE_URL}/search/movie?${params.toString()}`)
 
   if (!response.ok) {
-    throw new Error('Failed to fetch search results from TMDB.')
+    throw new Error('We could not load movie results right now.')
   }
 
   const data = await response.json()
