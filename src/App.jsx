@@ -3,6 +3,7 @@ import MainLayout from './layouts/MainLayout'
 import Home from './pages/Home'
 import MovieDetails from './pages/MovieDetails'
 import NotFound from './pages/NotFound'
+import Favorites from './pages/Favorites'
 
 const router = createBrowserRouter([
   {
@@ -11,6 +12,7 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <Home /> },
       { path: 'movie/:id', element: <MovieDetails /> },
+      { path: 'favorites', element: <Favorites /> },
     ]
   },
   { path: '*', element: <NotFound /> }
