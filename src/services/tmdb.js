@@ -20,3 +20,18 @@ export const getNowPlayingMovies = () => {
   return fetch(`${BASE_URL}/movie/now_playing?api_key=${API_KEY}`)
     .then(res => res.json())
 }
+
+export const getMovieDetails = (id) => {
+  return fetch(`${BASE_URL}/movie/${id}?api_key=${API_KEY}`)
+    .then(res => res.json())
+}
+
+export const getMovieTrailer = (id) => {
+  return fetch(`${BASE_URL}/movie/${id}/videos?api_key=${API_KEY}`)
+    .then(res => res.json())
+}
+
+export const getSimilarMovies = (id) => {
+  return fetch(`${BASE_URL}/movie/${id}/similar?api_key=${API_KEY}`)
+    .then(res => res.json())
+}
