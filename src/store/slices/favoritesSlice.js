@@ -1,39 +1,65 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-  items: [],
+  byUser: {},
 }
+
+const getOwnerKey = (userEmail) => userEmail?.trim().toLowerCase() || 'guest'
 
 const favoritesSlice = createSlice({
   name: 'favorites',
   initialState,
   reducers: {
+    setFavoritesForUser: (state, action) => {
+      const { userEmail, items } = action.payload
+
+      state.byUser[getOwnerKey(userEmail)] = items
+    },
     addFavorite: (state, action) => {
-      const exists = state.items.some((movie) => movie.id === action.payload.id)
+      const { userEmail, movie } = action.payload
+      const ownerKey = getOwnerKey(userEmail)
+      const items = state.byUser[ownerKey] ?? []
+      const exists = items.some((item) => item.id === movie.id)
 
       if (!exists) {
-        state.items.push(action.payload)
+        state.byUser[ownerKey] = [...items, movie]
       }
     },
     removeFavorite: (state, action) => {
-      state.items = state.items.filter((movie) => movie.id !== action.payload)
+      const { userEmail, movieId } = action.payload
+      const ownerKey = getOwnerKey(userEmail)
+      const items = state.byUser[ownerKey] ?? []
+
+      state.byUser[ownerKey] = items.filter((movie) => movie.id !== movieId)
     },
     toggleFavorite: (state, action) => {
-      const exists = state.items.some((movie) => movie.id === action.payload.id)
+      const { userEmail, movie } = action.payload
+      const ownerKey = getOwnerKey(userEmail)
+      const items = state.byUser[ownerKey] ?? []
+      const exists = items.some((item) => item.id === movie.id)
 
       if (exists) {
-        state.items = state.items.filter((movie) => movie.id !== action.payload.id)
+        state.byUser[ownerKey] = items.filter((item) => item.id !== movie.id)
         return
       }
 
-      state.items.push(action.payload)
+      state.byUser[ownerKey] = [...items, movie]
     },
-    clearFavorites: (state) => {
-      state.items = []
+    clearFavorites: (state, action) => {
+      const ownerKey = getOwnerKey(action.payload?.userEmail)
+
+      state.byUser[ownerKey] = []
     },
   },
 })
 
-export const { addFavorite, clearFavorites, removeFavorite, toggleFavorite } = favoritesSlice.actions
+export const { addFavorite, clearFavorites, removeFavorite, setFavoritesForUser, toggleFavorite } =
+  favoritesSlice.actions
+
+export const selectFavoriteMoviesForUser = (state, userEmail) =>
+  state.favorites.byUser[getOwnerKey(userEmail)] ?? []
+
+export const selectFavoriteCountForUser = (state, userEmail) =>
+  selectFavoriteMoviesForUser(state, userEmail).length
 
 export default favoritesSlice.reducer
