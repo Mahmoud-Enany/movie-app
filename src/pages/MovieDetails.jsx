@@ -1,7 +1,5 @@
 import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
-import { addToFavorites, removeFromFavorites } from '../store/favoritesSlice'
 import { getMovieDetails, getMovieTrailer, getSimilarMovies } from '../services/tmdb'
 import Spinner from '../components/Spinner'
 import ErrorMessage from '../components/ErrorMessage'
@@ -16,18 +14,6 @@ function MovieDetails() {
   const [similar, setSimilar] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
-
-  const dispatch = useDispatch()
-  const favorites = useSelector(state => state.favorites.movies)
-  const isFavorite = favorites.some(m => m.id === movie?.id)
-
-  const handleFavorite = () => {
-    if (isFavorite) {
-      dispatch(removeFromFavorites(movie.id))
-    } else {
-      dispatch(addToFavorites(movie))
-    }
-  }
 
   useEffect(() => {
     setLoading(true)
@@ -89,17 +75,6 @@ function MovieDetails() {
           <p style={{ color: 'var(--color-text-secondary)', lineHeight: '1.8' }}>
             {movie.overview}
           </p>
-          <button
-            onClick={handleFavorite}
-            className="btn mt-3"
-            style={{
-              background: isFavorite ? 'var(--color-text-accent-soft)' : 'transparent',
-              color: isFavorite ? '#000' : 'var(--color-text-accent-soft)',
-              border: '1px solid var(--color-text-accent-soft)',
-            }}
-          >
-            {isFavorite ? '❤️ Remove from Favorites' : '🤍 Add to Favorites'}
-          </button>
         </div>
       </div>
 
