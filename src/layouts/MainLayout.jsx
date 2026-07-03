@@ -1,15 +1,17 @@
 import { Outlet } from 'react-router-dom'
-import Navbar from '../components/Navbar'
-import Footer from '../components/Footer'
+import AppFooter from '../components/layout/AppFooter'
+import AppNavbar from '../components/layout/AppNavbar'
 
 function MainLayout() {
   return (
-    <div className="d-flex flex-column" style={{ minHeight: '100vh' }}>
-      <Navbar />
-      <main className="container py-4 flex-grow-1">
-        <Outlet />
+    <div className="app-shell d-flex flex-column">
+      <AppNavbar />
+      <main className="flex-grow-1 py-4 py-lg-5">
+        <div className="container py-lg-3">
+          <Outlet />
+        </div>
       </main>
-      <Footer />
+      <AppFooter />
     </div>
   )
 }
